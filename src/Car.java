@@ -54,7 +54,7 @@ public class Car extends Node{
         }
 
         if(this.getColor() == Color.red && this.getLocation().getX() > (ALERTRANGE + this.lastBreakDown.getX())){
-            this.setColor(Color.);
+
         }
     }
 
