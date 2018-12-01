@@ -23,6 +23,9 @@ public class Car extends Node{
     public static final double ALERTRANGE = 60;
     public Point lastBreakDown;
 
+    public StateCar state;
+
+
     // Constructor
     public Car(int direction, Point startPosition){
         super();
@@ -37,25 +40,25 @@ public class Car extends Node{
 
         this.setIcon(ICONPATH);
         this.setSensingRange(SENSINGRANGE);
+        state = new NormalState();
     }
 
+    public void setState(StateCar newState){
+        this.state = newState;
+    }
     @Override
     public void onClock() {
-        this.move(speed);
-        wrapLocation();
-
-        // Occurence de panne
-        double random = Math.random();
-
-        if(random < 0.0001){ // 0.001 is a good testing number
-            speed = 0;
-            this.setColor(Color.black);
-            System.out.println("Panne" + this.getLocation() + this.getTime());
+        if(!(this.state instanceof BreakdownState) ){
+            this.move(speed);
+            wrapLocation();
         }
 
-        if(this.getColor() == Color.red && this.getLocation().getX() > (ALERTRANGE + this.lastBreakDown.getX())){
-            this.setColor(Color.);
-        }
+        // cf current state.
+        state.action(this);
+
+
+
+
     }
 
     @Override
@@ -63,22 +66,8 @@ public class Car extends Node{
         super.onSensingIn(node);
 
         if(node instanceof Car){
-            if(((Car) node).speed == 0 && node.getDirection() == this.getDirection() ){
-                this.speed = 0;
-                this.setColor(Color.black);
-                System.out.println(((Car)node).direction);
-            }
-            else if(((Car) node).speed == 0 && node.getDirection() != this.getDirection() && this.getColor() != Color.red){
-                this.setColor(Color.red);
-                this.lastBreakDown = this.getLocation();
-
-            } else if (this.getColor() == Color.red){
-                send(node, "alert");
-            }
-
+            state.onInteract(this, (Car)node);
         }
-
-        // Tester les pannes uniquement pour les véhicules derriere celui qui tombe en panne > test sur GetX()
 
     }
 
