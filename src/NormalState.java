@@ -22,8 +22,8 @@ public class NormalState implements StateCar {
     public void onInteract(Car context, Car interact) {
         if(interact.state instanceof BreakdownState ){
             if(context.getDirection() != interact.getDirection() ){
-
-                context.setState(new AlertState());
+                //context.speed /=2;
+                context.setState(new AlertState(false));
                 context.setColor(Color.red);
                 context.lastBreakDown = interact.getLocation();
             }

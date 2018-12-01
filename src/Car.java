@@ -17,7 +17,7 @@ public class Car extends Node{
     public static final int MAXSPEED = 3;
     public static int RANGE = MAXSPEED - MINSPEED;
 
-    public static final double SENSINGRANGE = 50;
+    public static final double SENSINGRANGE = 100;
     public static final String ICONPATH = "/car.png";
 
     public static final double ALERTRANGE = 60;
@@ -59,7 +59,6 @@ public class Car extends Node{
 
 
 
-
     }
 
     @Override
@@ -77,14 +76,11 @@ public class Car extends Node{
         super.onMessage(message);
 
         if(message.getContent().equals("alert")){
-            if(this.getColor() != Color.red && this.getColor() != Color.black){
-                this.setColor(Color.red);
-                if(message.getSender().getDirection() != this.getDirection()){
+                    this.setColor(Color.red);
                     this.speed = speed/2;
                 }
             }
-        }
-    }
+
 }
 
 /*
