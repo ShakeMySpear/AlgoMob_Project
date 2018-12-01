@@ -24,7 +24,7 @@ public class Car extends Node{
     public Point lastBreakDown;
 
     public StateCar state;
-
+    public double newSpeed;
 
     // Constructor
     public Car(int direction, Point startPosition){
@@ -41,6 +41,7 @@ public class Car extends Node{
         this.setIcon(ICONPATH);
         this.setSensingRange(SENSINGRANGE);
         state = new NormalState();
+        newSpeed = -1;
     }
 
     public void setState(StateCar newState){
@@ -55,6 +56,10 @@ public class Car extends Node{
 
         // cf current state.
         state.action(this);
+    if(this.newSpeed > -1){
+        this.speed = newSpeed;
+        newSpeed =-1;
+    }
 
 
 
@@ -67,7 +72,11 @@ public class Car extends Node{
 
         if(node instanceof Car){
             state.onInteract(this, (Car)node);
+            if(this.getDirection() == node.getDirection()){
+              this.newSpeed =  ((Car) node).speed;
+            }
         }
+
 
     }
 
